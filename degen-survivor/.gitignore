@@ -1,0 +1,44 @@
+# Anchor
+.anchor
+target/
+**/*.rs.bk
+test-ledger/
+
+# IDL
+target/idl/
+target/types/
+
+# Solana
+.env
+keypairs/
+*.key
+!target/deploy/*-keypair.json
+
+# Node
+node_modules/
+dist/
+*.log
+yarn-error.log
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build artifacts
+*.so
+*.dylib
+*.dll
+
+# Test artifacts
+.pytest_cache/
+
+# Don't ignore deploy keypairs
+!target/deploy/
+target/deploy/*.so

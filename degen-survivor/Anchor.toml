@@ -1,0 +1,32 @@
+[workspace]
+members = [
+  "programs/vault",
+  "programs/game",
+  "programs/prize",
+  "programs/oracle",
+]
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[programs.devnet]
+vault = "HkZW45NrfmzTjV7q7mrdj51BZ5ryBhaEZQet5oRfJmi"
+game = "qhWdqP2HtsKTNs5QcDPKSvtjjcP9pmkjtyy8HU4yASt"
+prize = "BfCM2AwLS8UXboAExYh1p5Csx6RX8tb7QKYgNKvbAUje"
+oracle = "B4yqJH8RCYohHEbsZZXX7Pty84wYDG6kkav5U14zzvRb"
+
+[programs.localnet]
+vault = "HkZW45NrfmzTjV7q7mrdj51BZ5ryBhaEZQet5oRfJmi"
+game = "qhWdqP2HtsKTNs5QcDPKSvtjjcP9pmkjtyy8HU4yASt"
+prize = "BfCM2AwLS8UXboAExYh1p5Csx6RX8tb7QKYgNKvbAUje"
+oracle = "B4yqJH8RCYohHEbsZZXX7Pty84wYDG6kkav5U14zzvRb"
+
+[scripts]
+test = "node tests/test.js"
+
+[registry]
+url = "https://anchor.projectserum.com"
+
+[features]
+seeds = false
