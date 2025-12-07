@@ -8,7 +8,10 @@ pub enum VaultError {
 
     #[msg("Deposit amount is too small")]
     DepositTooSmall,
-
+    
+    #[msg("Deposite Amount is too large")]
+    DepositTooLarge,
+    
     #[msg("Insufficient balance")]
     InsufficientBalance,
 
