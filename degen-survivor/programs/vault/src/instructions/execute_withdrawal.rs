@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::token::{self, Burn, Mint, Token, TokenAccount};
 
-use crate::{constants::*, cpi};
+use crate::constants::*;
 use crate::errors::VaultError;
 use crate::state::*;
 
@@ -37,7 +37,9 @@ pub struct  ExecuteWithdrawal<'info>{
         token::authority = user,
     )]
     pub user_token_account: Account<'info, TokenAccount>,
-
+    /// CHECK: Fee collector is a trusted account that only receives SOL.
+    /// No data is read from this account, and it is not used as an authority.
+    #[account(mut)]
     pub fee_collector : AccountInfo<'info>,
 
     pub system_program : Program<'info,System>,

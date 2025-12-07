@@ -1,5 +1,6 @@
 use anchor_lang::prelude::*;
-
+pub mod state;
+pub mod constants;
 // REPLACE THIS WITH YOUR ACTUAL PROGRAM ID FROM STEP 3
 declare_id!("qhWdqP2HtsKTNs5QcDPKSvtjjcP9pmkjtyy8HU4yASt");
 
@@ -14,4 +15,8 @@ pub mod game {
 }
 
 #[derive(Accounts)]
-pub struct Initialize {}
+pub struct Initialize<'info> {
+    #[account(mut)]
+
+    pub signer : Signer<'info>
+}
