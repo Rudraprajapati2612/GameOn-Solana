@@ -43,7 +43,7 @@ pub struct GameState{
     // to check for maximum player is reached 
     pub player_finalized : bool,    
     // types of question for each round 
-    pub round_type  : [RoundType;5],
+    pub round_types  : [RoundType;5],
 
     pub leaderboard_finalized : bool,
 
@@ -86,7 +86,7 @@ pub struct PlayerState{
 
     pub prize_amount : u64 ,
 
-    pub prize_claimed : u64,
+    pub prize_claimed : bool,
 
     pub total_reponse_time : u64,
     pub avg_response_time : u32,

@@ -10,9 +10,9 @@ pub const DEFAULT_ENTRY_FEE : u64 = 500_000_000_000;
 
 pub const MAX_PLAYER : u16 = 50;
 
-pub const MIN_PLAYER :u8= 2;
+pub const MIN_PLAYER :u16= 2;
 
-pub const TOTAL_ROUND :u8 = 5;
+pub const TOTAL_ROUNDS :u8 = 5;
 
 pub const ROUND_DURATION_SECONDS :i64 = 60;
 // 2min gaps between 2 round 
