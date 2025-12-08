@@ -182,7 +182,7 @@ pub enum  GameStatus {
     Cancelled 
 }
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug, PartialEq)]
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy , Debug, PartialEq)]
 
 pub enum  RoundType {
     // Simple Up and Down 
@@ -198,7 +198,7 @@ pub enum  RoundType {
 }
 
 
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug, PartialEq)]
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Copy, Debug, PartialEq)]
 
 pub enum PredectionChoice {
     // PriceDirection 
