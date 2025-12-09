@@ -2,7 +2,6 @@ use anchor_lang::prelude::*;
 
 use crate::constants::*;
 use crate::errors::GameError;
-use crate::program::Game;
 use crate::state::*;
 
 
@@ -36,7 +35,7 @@ pub struct SumbitPredection <'info> {
     pub round_result: Account<'info, RoundResult>,
 }
 
-pub fn handeler(ctx:Context<SumbitPredection>,_game_id:u64,round_number:u8,choice : PredectionChoice)->Result<()>{
+pub fn handler(ctx:Context<SumbitPredection>,_game_id:u64,round_number:u8,choice : PredectionChoice)->Result<()>{
     let game_state = &mut ctx.accounts.game_state;
     let player_state = &mut ctx.accounts.player_state;
     let round_result = &mut ctx.accounts.round_result;

@@ -27,7 +27,7 @@ pub struct  StartGame <'info> {
 
     pub system_program : Program<'info,System>,
 }
-pub fn handeler(ctx:Context<StartGame>,start_btc_price:Option<u64>, start_sol_price:Option<u64>,game_id : u64)->Result<()>{
+pub fn handler(ctx:Context<StartGame>,start_btc_price:Option<u64>, start_sol_price:Option<u64>,game_id : u64)->Result<()>{
     
     let game_state  = &mut ctx.accounts.game_state;
     let round_result = &mut ctx.accounts.round_result;

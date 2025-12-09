@@ -25,7 +25,7 @@ pub struct CreateGame<'info>{
 }
 
 
-pub fn handeler(ctx:Context<CreateGame>,game_id:u64,game_type:GameType,start_time:i64,entry_fee:u64)-> Result<()>{
+pub fn handler(ctx:Context<CreateGame>,game_id:u64,game_type:GameType,start_time:i64,entry_fee:u64)-> Result<()>{
     
     let game_state = &mut ctx.accounts.game_state;
     let clock = Clock::get()?;

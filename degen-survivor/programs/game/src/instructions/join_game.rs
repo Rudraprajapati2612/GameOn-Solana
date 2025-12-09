@@ -41,7 +41,7 @@ pub struct  JoinGame<'info>{
     pub system_program: Program<'info, System>,
 }
 
-pub fn handeler (ctx:Context<JoinGame>,game_id:u64 , username:String)->Result<()>{
+pub fn handler (ctx:Context<JoinGame>,game_id:u64 , username:String)->Result<()>{
     let game_state = &mut ctx.accounts.game_state;
     let player_state = &mut ctx.accounts.player_state;
 

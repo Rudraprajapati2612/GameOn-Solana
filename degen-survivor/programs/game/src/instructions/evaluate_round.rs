@@ -31,7 +31,7 @@ pub struct EvualatedRound <'info> {
     pub round_result : Account<'info,RoundResult>,
 }
 
-pub fn handeler(ctx:Context<EvualatedRound>,_gmae_id : u64,round_number:u8 )->Result<()>{
+pub fn handler(ctx:Context<EvualatedRound>,_gmae_id : u64,round_number:u8 )->Result<()>{
     let player_state = &mut ctx.accounts.player_state;
     let round_result = &mut ctx.accounts.round_result;
     let clock = Clock::get()?;
