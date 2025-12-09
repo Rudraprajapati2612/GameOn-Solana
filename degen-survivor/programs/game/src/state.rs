@@ -31,6 +31,7 @@ pub struct GameState{
     pub entry_fee : u64,
 
     pub prize_pool : u64,
+    pub prize_pool_token_account:Pubkey,
     // platform fees in bias point (600=6%)
     pub platform_fee_bps : u16,
     // wheter prize pool is being distributed or not 
