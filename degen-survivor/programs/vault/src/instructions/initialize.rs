@@ -5,9 +5,9 @@ use crate::constants::*;
 use crate::state::*;
 
 #[derive(Accounts)]
-pub struct Initialize<'info> {
+pub struct Initialize<'info> {  
     #[account(mut)]
-    pub admin: Signer<'info>,
+    pub admin: Signer<'info>,  
 
     #[account(
         init,
