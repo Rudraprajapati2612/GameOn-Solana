@@ -7,7 +7,7 @@ pub mod state;
 
 use instructions::*;
 
-declare_id!("BfCM2AwLS8UXboAExYh1p5Csx6RX8tb7QKYgNKvbAUje");
+declare_id!("FWQ8Z7RZt3wEbw4PT5ovZG2Nd4NBRtfkJn2kRD8ctH3o");
 
 #[program]
 pub mod prize {

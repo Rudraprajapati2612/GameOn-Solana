@@ -8,7 +8,7 @@ pub mod state;
 use instructions::*;
 use state::*;
 
-declare_id!("qhWdqP2HtsKTNs5QcDPKSvtjjcP9pmkjtyy8HU4yASt");
+declare_id!("8CLxjoAivuuxrFNK8aanU2f6Nw7L6tBT2xEgNNoUMmNE");
 
 #[program]
 pub mod game {

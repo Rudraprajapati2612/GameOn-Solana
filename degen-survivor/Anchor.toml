@@ -11,16 +11,19 @@ cluster = "devnet"
 wallet = "~/.config/solana/id.json"
 
 [programs.devnet]
-vault = "HkZW45NrfmzTjV7q7mrdj51BZ5ryBhaEZQet5oRfJmi"
-game = "qhWdqP2HtsKTNs5QcDPKSvtjjcP9pmkjtyy8HU4yASt"
-prize = "BfCM2AwLS8UXboAExYh1p5Csx6RX8tb7QKYgNKvbAUje"
-oracle = "B4yqJH8RCYohHEbsZZXX7Pty84wYDG6kkav5U14zzvRb"
+vault = "5D2EFjnokFHzGeVQ2AMpdMC6SazYaashKHAzMGWRzJVd"
+game = "8CLxjoAivuuxrFNK8aanU2f6Nw7L6tBT2xEgNNoUMmNE"
+prize = "FWQ8Z7RZt3wEbw4PT5ovZG2Nd4NBRtfkJn2kRD8ctH3o"
+oracle = "DXcVaNoHXgykgpNvrS8s3LJFEfkW4LPayeKyVcrJP578"
+
+
 
 [programs.localnet]
-vault = "HkZW45NrfmzTjV7q7mrdj51BZ5ryBhaEZQet5oRfJmi"
-game = "qhWdqP2HtsKTNs5QcDPKSvtjjcP9pmkjtyy8HU4yASt"
-prize = "BfCM2AwLS8UXboAExYh1p5Csx6RX8tb7QKYgNKvbAUje"
-oracle = "B4yqJH8RCYohHEbsZZXX7Pty84wYDG6kkav5U14zzvRb"
+vault = "5D2EFjnokFHzGeVQ2AMpdMC6SazYaashKHAzMGWRzJVd"
+game = "8CLxjoAivuuxrFNK8aanU2f6Nw7L6tBT2xEgNNoUMmNE"
+prize = "FWQ8Z7RZt3wEbw4PT5ovZG2Nd4NBRtfkJn2kRD8ctH3o"
+oracle = "DXcVaNoHXgykgpNvrS8s3LJFEfkW4LPayeKyVcrJP578"
+
 
 [scripts]
 test = "node tests/test.js"

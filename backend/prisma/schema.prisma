@@ -12,3 +12,352 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+
+model User {
+  id              String   @id @default(cuid())
+  walletAddress   String   @unique
+  username        String?  @unique
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  balances        Balance?
+  playerGames     PlayerGame[]
+  transactions    Transaction[]
+  predictions     Prediction[]
+  
+  @@index([walletAddress])
+}
+
+// ============================================
+// WALLET & BALANCES
+// ============================================
+
+model Balance {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  user            User     @relation(fields: [userId], references: [id])
+  
+  degenBalance    Decimal  @default(0) @db.Decimal(20, 2)
+  solBalance      Decimal  @default(0) @db.Decimal(20, 9)
+  
+  totalDeposits   Decimal  @default(0) @db.Decimal(20, 2)
+  totalWithdrawals Decimal @default(0) @db.Decimal(20, 2)
+  
+  updatedAt       DateTime @updatedAt
+}
+
+// ============================================
+// GAMES
+// ============================================
+
+model Game {
+  id              String      @id @default(cuid())
+  gameId          String      @unique // On-chain game ID
+  
+  gameType        GameType
+  status          GameStatus  @default(PENDING)
+  
+  startTime       DateTime
+  actualStartTime DateTime?
+  endTime         DateTime?
+  
+  entryFee        Decimal     @db.Decimal(20, 2)
+  prizePool       Decimal     @default(0) @db.Decimal(20, 2)
+  
+  totalPlayers    Int         @default(0)
+  maxPlayers      Int         @default(50)
+  
+  currentRound    Int         @default(0)
+  totalRounds     Int         @default(5)
+  
+  leaderboardFinalized Boolean @default(false)
+  
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  
+  players         PlayerGame[]
+  rounds          Round[]
+  prizeDistributions PrizeDistribution[]
+  
+  @@index([gameId])
+  @@index([status])
+  @@index([startTime])
+}
+
+enum GameType {
+  BTC_ONLY
+  SOL_ONLY
+  BTC_VS_SOL
+}
+
+enum GameStatus {
+  PENDING
+  ACTIVE
+  COMPLETED
+  CANCELLED
+}
+
+// ============================================
+// PLAYERS IN GAMES
+// ============================================
+
+model PlayerGame {
+  id              String   @id @default(cuid())
+  
+  gameId          String
+  game            Game     @relation(fields: [gameId], references: [id])
+  
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+  
+  entrySlot       Int
+  
+  totalScore      Int      @default(0)
+  roundsEvaluated Int      @default(0)
+  
+  finalRank       Int?
+  prizeAmount     Decimal  @default(0) @db.Decimal(20, 2)
+  prizeClaimed    Boolean  @default(false)
+  
+  totalResponseTime BigInt @default(0)
+  avgResponseTime   Int    @default(0)
+  firstPredictionAt DateTime?
+  
+  joinedAt        DateTime @default(now())
+  
+  predictions     Prediction[]
+  
+  @@unique([gameId, userId])
+  @@index([gameId])
+  @@index([userId])
+  @@index([finalRank])
+}
+
+// ============================================
+// ROUNDS
+// ============================================
+
+model Round {
+  id              String      @id @default(cuid())
+  
+  gameId          String
+  game            Game        @relation(fields: [gameId], references: [id])
+  
+  roundNumber     Int
+  roundType       RoundType
+  
+  startTime       DateTime
+  endTime         DateTime
+  evaluatedAt     DateTime?
+  
+  startPriceBtc   Decimal?    @db.Decimal(20, 2)
+  endPriceBtc     Decimal?    @db.Decimal(20, 2)
+  startPriceSol   Decimal?    @db.Decimal(20, 4)
+  endPriceSol     Decimal?    @db.Decimal(20, 4)
+  
+  correctAnswer   String?
+  
+  totalPredictions Int        @default(0)
+  correctPredictions Int      @default(0)
+  
+  predictions     Prediction[]
+  
+  @@unique([gameId, roundNumber])
+  @@index([gameId])
+}
+
+enum RoundType {
+  PRICE_DIRECTION
+  MAGNITUDE
+  COMPARATIVE
+  RANGE
+  TREND
+}
+
+// ============================================
+// PREDICTIONS
+// ============================================
+
+model Prediction {
+  id              String      @id @default(cuid())
+  
+  gameId          String
+  roundNumber     Int
+  round           Round       @relation(fields: [gameId, roundNumber], references: [gameId, roundNumber])
+  
+  userId          String
+  user            User        @relation(fields: [userId], references: [id])
+  
+  playerGameId    String
+  playerGame      PlayerGame  @relation(fields: [playerGameId], references: [id])
+  
+  choice          String
+  submittedAt     DateTime    @default(now())
+  responseTime    Int
+  
+  pointsEarned    Int         @default(0)
+  isCorrect       Boolean     @default(false)
+  
+  @@unique([gameId, roundNumber, userId])
+  @@index([userId])
+  @@index([playerGameId])
+}
+
+// ============================================
+// PRIZE DISTRIBUTIONS
+// ============================================
+
+model PrizeDistribution {
+  id              String   @id @default(cuid())
+  
+  gameId          String
+  game            Game     @relation(fields: [gameId], references: [id])
+  
+  rank            Int
+  walletAddress   String
+  amount          Decimal  @db.Decimal(20, 2)
+  
+  claimed         Boolean  @default(false)
+  claimedAt       DateTime?
+  transactionHash String?
+  
+  createdAt       DateTime @default(now())
+  
+  @@unique([gameId, rank])
+  @@index([walletAddress])
+}
+
+// ============================================
+// TRANSACTIONS
+// ============================================
+
+model Transaction {
+  id              String          @id @default(cuid())
+  
+  userId          String?
+  user            User?           @relation(fields: [userId], references: [id])
+  
+  type            TransactionType
+  signature       String          @unique
+  status          TxStatus        @default(PENDING)
+  
+  amount          Decimal?        @db.Decimal(20, 2)
+  
+  retries         Int             @default(0)
+  maxRetries      Int             @default(3)
+  
+  error           String?
+  
+  createdAt       DateTime        @default(now())
+  confirmedAt     DateTime?
+  
+  @@index([userId])
+  @@index([signature])
+  @@index([status])
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  JOIN_GAME
+  CLAIM_PRIZE
+  PLATFORM_FEE
+  CREATE_GAME
+  EVALUATE_ROUND
+  FETCH_PRICE
+}
+
+enum TxStatus {
+  PENDING
+  CONFIRMED
+  FAILED
+}
+
+// ============================================
+// BLOCKCHAIN EVENTS
+// ============================================
+
+model BlockchainEvent {
+  id              String   @id @default(cuid())
+  
+  programId       String
+  eventType       String
+  
+  gameId          String?
+  userId          String?
+  
+  data            Json
+  
+  slot            String
+  signature       String   @unique
+  timestamp       DateTime
+  
+  processed       Boolean  @default(false)
+  processedAt     DateTime?
+  
+  createdAt       DateTime @default(now())
+  
+  @@index([programId])
+  @@index([eventType])
+  @@index([gameId])
+  @@index([processed])
+}
+
+// ============================================
+// ORACLE PRICE DATA
+// ============================================
+
+model OraclePrice {
+  id              String   @id @default(cuid())
+  
+  gameId          String
+  roundNumber     Int
+  
+  asset           String   // "BTC" or "SOL"
+  priceType       PriceType // START or END
+  
+  price           Decimal  @db.Decimal(20, 4)
+  confidence      Decimal  @db.Decimal(20, 4)
+  
+  slot            String
+  timestamp       DateTime
+  
+  fetchedAt       DateTime @default(now())
+  
+  @@unique([gameId, roundNumber, asset, priceType])
+  @@index([gameId, roundNumber])
+}
+
+enum PriceType {
+  START
+  END
+}
+
+// ============================================
+// SYSTEM LOGS
+// ============================================
+
+model SystemLog {
+  id              String   @id @default(cuid())
+  
+  level           LogLevel
+  service         String
+  message         String
+  
+  metadata        Json?
+  
+  createdAt       DateTime @default(now())
+  
+  @@index([level])
+  @@index([service])
+  @@index([createdAt])
+}
+
+enum LogLevel {
+  DEBUG
+  INFO
+  WARN
+  ERROR
+  FATAL
+}
